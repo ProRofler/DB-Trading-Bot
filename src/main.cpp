@@ -1,7 +1,7 @@
 #include "trading_bot.h"
 
 int main() {
-    TradingBot bot("DB-Trader");
+    TradingBot bot;
     bot.start();
     return 0;
 }
