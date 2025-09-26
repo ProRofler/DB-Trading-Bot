@@ -1,7 +1,7 @@
 #include "trading_bot.h"
 
 #include <csignal>
-#include <ctime>
+#include <format>
 #include <iostream>
 #include <thread>
 
@@ -25,8 +25,8 @@ void trading_bot::start(std::chrono::milliseconds interval) {
   std::signal(SIGINT, signal_handler);
 
   while (is_running.load() && !g_interrupted.load()) {
-    auto current_time = trading_bot::get_current_time_and_date();
-    std::cout << std::ctime(&current_time) << ": bot is working" << std::endl;
+    std::cout << trading_bot::get_current_time_and_date() << " -- bot is working"
+              << std::endl;
 
     std::this_thread::sleep_for(interval);
   }
@@ -35,7 +35,9 @@ void trading_bot::start(std::chrono::milliseconds interval) {
 std::string trading_bot::get_name() const { return name_; }
 
 // static
-std::time_t trading_bot::get_current_time_and_date() {
-  auto time = std::chrono::system_clock::now();
-  return std::chrono::system_clock::to_time_t(time);
+std::string trading_bot::get_current_time_and_date() {
+  auto time = std::chrono::floor<std::chrono::seconds>(
+      std::chrono::system_clock::now());
+
+  return std::format("{:%Y-%m-%d %H:%M:%S}", time);
 }

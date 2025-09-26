@@ -13,7 +13,7 @@ class trading_bot {
 
  private:
   // methods
-  static std::time_t get_current_time_and_date();
+  static std::string get_current_time_and_date();
 
   // members
   std::string name_;
