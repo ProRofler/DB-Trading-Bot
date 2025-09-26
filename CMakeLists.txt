@@ -43,6 +43,11 @@
         )
     endif()
 
+    #----- Curl fetch ----------------------------------------------------------
+    
+
+
+
     # --- Testing (optional) -----------------------------------------------
     option(BUILD_TESTS "Enable building unit tests" ON)
 
