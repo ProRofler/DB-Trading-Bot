@@ -45,3 +45,9 @@ Testing/
 
 #misc
 *.tsv
+
+#Docker
+docker*
+
+#jsons
+/*.json

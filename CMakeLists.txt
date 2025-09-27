@@ -9,6 +9,11 @@
         link_libraries(ws2_32 wsock32)
     endif()
 
+    
+    #----- Check dependencies ----------------------------------------------------------
+
+    find_package(CURL REQUIRED)
+
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
     # Collect headers and sources from conventional folders
@@ -43,25 +48,10 @@
         )
     endif()
 
-    #----- Curl fetch ----------------------------------------------------------
-    
-
-
-
     # --- Testing (optional) -----------------------------------------------
     option(BUILD_TESTS "Enable building unit tests" ON)
 
     if(BUILD_TESTS)
-
-    include(FetchContent)
-
-    # Declare the external repo
-    FetchContent_Declare(
-    gtest
-    GIT_REPOSITORY https://github.com/google/googletest
-    GIT_TAG        main   # or a specific commit hash / tag
-    )
-
 
     enable_testing()
 
@@ -69,12 +59,10 @@
     if(EXISTS "${GTEST_SUBMODULE_DIR}/CMakeLists.txt")
         message(STATUS "Found googletest submodule at ${GTEST_SUBMODULE_DIR}; adding to build")
         add_subdirectory(${GTEST_SUBMODULE_DIR} EXCLUDE_FROM_ALL)
+        target_link_libraries(${PROJECT_NAME} PRIVATE gtest)
     else()
-        message(STATUS "googletest not found in ${GTEST_SUBMODULE_DIR}. Fetching")
-        FetchContent_MakeAvailable(gtest)
+        message(FATAL_ERROR "googletest not found in ${GTEST_SUBMODULE_DIR}. Make sure you downloaded all the submodules")
     endif()
-
-    target_link_libraries(${PROJECT_NAME} PRIVATE gtest)
 
     if(EXISTS "${CMAKE_SOURCE_DIR}/tests/CMakeLists.txt")
         message(STATUS "tests/CMakeLists.txt found.")
