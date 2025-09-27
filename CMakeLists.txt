@@ -9,11 +9,6 @@
         link_libraries(ws2_32 wsock32)
     endif()
 
-    
-    #----- Check dependencies ----------------------------------------------------------
-
-    find_package(CURL REQUIRED)
-
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
     # Collect headers and sources from conventional folders
@@ -47,6 +42,13 @@
             -Wall -Wextra -pedantic -Werror 
         )
     endif()
+
+    #----- Check dependencies ----------------------------------------------------------
+
+    find_package(CURL REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE CURL::libcurl)
+
+
 
     # --- Testing (optional) -----------------------------------------------
     option(BUILD_TESTS "Enable building unit tests" ON)
