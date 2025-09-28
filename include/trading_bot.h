@@ -7,6 +7,8 @@
 class trading_bot {
  public:
   trading_bot(std::string name);
+  ~trading_bot();
+  
   void start(std::chrono::milliseconds interval = std::chrono::seconds(1));
 
   std::string get_name() const;
