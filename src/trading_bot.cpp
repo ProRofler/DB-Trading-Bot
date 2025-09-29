@@ -15,6 +15,12 @@ static void signal_handler(int) {
   std::cout << "User aborted" << std::endl;
 }
 
+std::string format_price(double value) {
+  std::ostringstream oss;
+  oss << std::fixed << std::setprecision(2) << value;
+  return oss.str();
+}
+
 trading_bot::trading_bot(std::string name) : name_(std::move(name)) {}
 
 trading_bot::~trading_bot() { std::cout << "Exiting..." << std::endl; }
@@ -30,11 +36,12 @@ void trading_bot::start(std::chrono::milliseconds interval) {
   std::signal(SIGINT, signal_handler);
 
   while (is_running.load() && !g_interrupted.load()) {
-    std::cout << trading_bot::get_current_time_and_date()
-              << " -- bot is working" << std::endl;
-
-    std::cout << "Current SPY price: "
-              << price_handler::get().get_current_price() << std::endl;
+    double price = price_handler::get().get_current_price();
+    std::cout << "\r" << trading_bot::get_current_time_and_date() << " -- "
+              << "Current SPY price: "
+              << (price == 0.0 ? "N/A" : format_price(price))
+              << "     "  // overwrite leftovers with spaces
+              << std::flush;
 
     std::this_thread::sleep_for(interval);
   }

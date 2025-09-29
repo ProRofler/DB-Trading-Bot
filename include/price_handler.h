@@ -6,7 +6,7 @@
 
 class price_handler {
  public:
-  static std::string get_current_price();
+  static double get_current_price();
   static const price_handler& get();
   static void stop();
 
@@ -14,7 +14,7 @@ class price_handler {
   price_handler& operator=(const price_handler& other) = delete;
 
  private:
-  std::string price;
+  double price;
 
  private:
   price_handler();
