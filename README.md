@@ -70,6 +70,17 @@ cmake .. -DBUILD_TESTS=OFF
 - `extern/` — third party submodules
 - `vcpkg.json`, `vcpkg-configuration.json` — optional vcpkg manifest and configuration
 
+## Development notes / next steps
+
+- Wire real market connectors (REST / WebSocket clients). libcurl is available for HTTP; consider adding a websocket library if needed.
+- Add a configuration system (JSON/TOML/YAML) and better logging.
+- Add robust error handling and CLI options for live vs paper trading.
+- Secure any API keys via environment variables or a secrets manager.
+
+## Contributing
+
+Ehhh really? Let me develop it to somewhat working stage first
+
 # vcpkg tips (Windows only)
 
 If you are using **vcpkg** on Windows and it is **not** added to your system environment variables,  
@@ -91,14 +102,8 @@ Example `CMakeUserPresets.json`:
   ]
 }
 ```
-## Development notes / next steps
 
-- Wire real market connectors (REST / WebSocket clients). libcurl is available for HTTP; consider adding a websocket library if needed.
-- Add a configuration system (JSON/TOML/YAML) and better logging.
-- Add robust error handling and CLI options for live vs paper trading.
-- Secure any API keys via environment variables or a secrets manager.
-
-## Contributing
-
-Ehhh really? Let me develop it to somewhat working stage first
-
+With this setup:
+- **CMakePresets.json** → shared build presets (`Debug` / `Release`)
+- **CMakeUserPresets.json** → personal overrides (e.g. local `vcpkg` path)
+- **vcpkg-configuration.json** → locked registry & baseline for reproducible builds
