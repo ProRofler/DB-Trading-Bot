@@ -50,4 +50,4 @@ Testing/
 docker*
 
 #jsons
-/*.json
+/cmakeu*.json

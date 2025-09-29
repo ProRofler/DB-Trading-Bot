@@ -4,6 +4,7 @@
     set(PROJECT_VERSION 0.0.${PATCH_VERSION})
 
     project(DB_Trading_Bot VERSION ${PROJECT_VERSION})
+    set(CMAKE_CONFIGURATION_TYPES "Debug;Release;RelWithDebInfo;MinSizeRel" CACHE STRING "" FORCE)
 
     if(MINGW)
         link_libraries(ws2_32 wsock32)
