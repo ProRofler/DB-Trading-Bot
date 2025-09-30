@@ -27,7 +27,7 @@ double extract_price(const std::string& json) {
     return std::stod(json.substr(pos, end - pos));
 }
 
-double curl_test() {
+double request_yahoo() {
   CURL* curl;
   CURLcode res;
   std::string read_buffer;
@@ -87,7 +87,7 @@ double price_handler::get_current_price() { return get().price; }
 void price_handler::fetch_price() {
   while (is_active.load()) {
     mtx.lock();
-    price = curl_test();
+    price = request_yahoo();
     mtx.unlock();
 
     std::this_thread::sleep_for(std::chrono::minutes(1));  // sleep for one min

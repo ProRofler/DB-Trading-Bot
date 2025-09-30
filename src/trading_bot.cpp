@@ -15,23 +15,22 @@ static void signal_handler(int) {
   std::cout << "User aborted" << std::endl;
 }
 
-std::string format_price(double value) {
+inline static std::string format_price(double value) {
   std::ostringstream oss;
   oss << std::fixed << std::setprecision(2) << value;
   return oss.str();
 }
 
-trading_bot::trading_bot(std::string name) : name_(std::move(name)) {}
-
-trading_bot::~trading_bot() { std::cout << "Exiting..." << std::endl; }
-
-void trading_bot::start(std::chrono::milliseconds interval) {
+void trading_bot::start(std::chrono::milliseconds interval,
+                        [[maybe_unused]] const broker broker_type) {
   if (is_running.exchange(true)) return;  // already running
+  is_running.store(true);
 
-  std::cout << "TradingBot '" << name_
-            << "' started. (no real trading implemented)" << std::endl;
-
-  is_running = true;
+  std::cout
+      << "*****************************************************************\n"
+      << "TradingBot '" << name_ << "' started. (no real trading implemented)"
+      << "\n*****************************************************************"
+      << std::endl;
 
   std::signal(SIGINT, signal_handler);
 

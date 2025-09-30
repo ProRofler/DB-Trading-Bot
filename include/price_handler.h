@@ -1,3 +1,5 @@
+#pragma once
+
 #include <atomic>
 #include <memory>
 #include <mutex>
@@ -14,7 +16,7 @@ class price_handler {
   price_handler& operator=(const price_handler& other) = delete;
 
  private:
-  double price;
+  double price = 0.;
 
  private:
   price_handler();
