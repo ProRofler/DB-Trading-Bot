@@ -7,6 +7,8 @@
 
 #include "price_handler.h"
 
+namespace utils {
+
 static std::atomic<bool> g_interrupted{false};
 
 static void signal_handler(int) {
@@ -20,6 +22,7 @@ inline static std::string format_price(double value) {
   oss << std::fixed << std::setprecision(2) << value;
   return oss.str();
 }
+}  // namespace utils
 
 void trading_bot::start(std::chrono::milliseconds interval,
                         [[maybe_unused]] const broker broker_type) {
@@ -32,13 +35,13 @@ void trading_bot::start(std::chrono::milliseconds interval,
       << "\n*****************************************************************"
       << std::endl;
 
-  std::signal(SIGINT, signal_handler);
+  std::signal(SIGINT, utils::signal_handler);
 
-  while (is_running.load() && !g_interrupted.load()) {
+  while (is_running.load() && !utils::g_interrupted.load()) {
     double price = price_handler::get().get_current_price();
     std::cout << "\r" << trading_bot::get_current_time_and_date() << " -- "
               << "Current SPY price: "
-              << (price == 0.0 ? "N/A" : format_price(price))
+              << (price == 0.0 ? "N/A" : utils::format_price(price))
               << "     "  // overwrite leftovers with spaces
               << std::flush;
 

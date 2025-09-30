@@ -6,6 +6,9 @@
 #include <string>
 #include <thread>
 
+#include "brokers.h"
+
+
 class price_handler {
  public:
   static double get_current_price();

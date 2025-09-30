@@ -4,7 +4,10 @@
 
 #include <chrono>
 
-// **********************curl related
+#include "brokers.h"
+
+namespace curl {
+
 static size_t write_callback(void* contents, size_t size, size_t nmemb,
                              void* userp) {
   ((std::string*)userp)->append((char*)contents, size * nmemb);
@@ -12,19 +15,19 @@ static size_t write_callback(void* contents, size_t size, size_t nmemb,
 }
 
 double extract_price(const std::string& json) {
-    const std::string key = "\"regularMarketPrice\":";
-    auto pos = json.find(key);
-    if (pos == std::string::npos) return -1;
+  const std::string key = "\"regularMarketPrice\":";
+  auto pos = json.find(key);
+  if (pos == std::string::npos) return -1;
 
-    pos += key.size();
-    // skip spaces
-    while (pos < json.size() && isspace(json[pos])) ++pos;
+  pos += key.size();
+  // skip spaces
+  while (pos < json.size() && isspace(json[pos])) ++pos;
 
-    // read number
-    size_t end = pos;
-    while (end < json.size() && (isdigit(json[end]) || json[end] == '.')) ++end;
+  // read number
+  size_t end = pos;
+  while (end < json.size() && (isdigit(json[end]) || json[end] == '.')) ++end;
 
-    return std::stod(json.substr(pos, end - pos));
+  return std::stod(json.substr(pos, end - pos));
 }
 
 double request_yahoo() {
@@ -65,7 +68,7 @@ double request_yahoo() {
   return current_price;
 }
 
-// **********************
+}  // namespace curl
 
 price_handler::price_handler() {
   t_1 = std::thread(&price_handler::fetch_price, this);
@@ -87,7 +90,7 @@ double price_handler::get_current_price() { return get().price; }
 void price_handler::fetch_price() {
   while (is_active.load()) {
     mtx.lock();
-    price = request_yahoo();
+    price = curl::request_yahoo();
     mtx.unlock();
 
     std::this_thread::sleep_for(std::chrono::minutes(1));  // sleep for one min
