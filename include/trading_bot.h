@@ -5,7 +5,7 @@
 #include <chrono>
 #include <string>
 
-class trading_bot {
+class trading_bot final {
    public:
     constexpr trading_bot(std::string name, const broker broker_type)
         : name_(std::move(name)), broker_type_(broker_type) {};

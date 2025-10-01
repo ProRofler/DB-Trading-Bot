@@ -25,12 +25,12 @@ inline static std::string format_price(double value) {
 
 void trading_bot::start(std::chrono::milliseconds interval,
                         [[maybe_unused]] const broker broker_type) {
-    if (is_running.exchange(true)) return;  // already running
+    if (is_running.exchange(true)) return;
     is_running.store(true);
 
     std::cout
         << "*****************************************************************\n"
-        << "TradingBot '" << name_ << "' started. (no real trading implemented)"
+        << "TradingBot '" << name_ << "' started"
         << "\n*****************************************************************"
         << std::endl;
 
