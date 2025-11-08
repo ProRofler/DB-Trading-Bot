@@ -7,7 +7,8 @@
 
 class trading_bot final {
    public:
-    constexpr trading_bot(std::string name, const broker broker_type)
+    constexpr trading_bot(std::string name,
+                          const broker broker_type = broker::yahoo)
         : name_(std::move(name)), broker_type_(broker_type) {};
     ~trading_bot() = default;
 
